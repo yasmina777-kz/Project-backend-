@@ -10,7 +10,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES =60
 
 
 def hash_password(password: str) -> str:
-    password_bytes = password.encode("utf-8")[:72]  # ✅ режем байты, а не символы
+    password_bytes = password.encode("utf-8")[:72]
     return pwd_context.hash(password_bytes)
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
