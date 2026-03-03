@@ -1,5 +1,7 @@
 from pydantic import BaseModel, ConfigDict, EmailStr
 from typing import Optional
+from datetime import datetime
+
 
 class UserCreate(BaseModel):
     email: EmailStr
@@ -37,3 +39,17 @@ class UserAdminUpdate(BaseModel):
     full_name: Optional[str] = None
     is_active: Optional[bool] = None
     role: Optional[str] = None
+
+class ChatCreate(BaseModel):
+    name: str
+
+class ChatResponse(BaseModel):
+    id: int
+    name: str
+
+    class Config:
+        from_attributes = True
+
+
+class MessageCreate(BaseModel):
+    content: str

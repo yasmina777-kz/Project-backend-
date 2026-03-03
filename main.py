@@ -9,6 +9,11 @@ from backend.routers.auth import admin_required, get_db
 from passlib.context import CryptContext
 from backend.crud import users as crud_users
 from fastapi.middleware.cors import CORSMiddleware
+from  backend.db import engine
+from backend.models import Base
+from backend.routers import users,chats,messages
+from backend.websocket import (router as ws_router)
+
 
 Base.metadata.create_all(bind=engine)
 
@@ -26,5 +31,11 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(posts.router)
+
+app.include_router(chats.router)
+
+app.include_router(messages.router)
+
+app.include_router(ws_router)
 
 pwd_context = CryptContext(schemes=["bcrypt"])

@@ -1,5 +1,6 @@
 from sqlalchemy import String, Integer, Boolean, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import Column, Integer, String, ForeignKey,Table, Text, DateTime
 from backend.db import Base
 
 
@@ -29,3 +30,21 @@ class Posts(Base):
         nullable=False
     )
     user: Mapped["User"] = relationship(back_populates="posts")
+
+
+class Chat(Base):
+    __tablename__ = "chats"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+
+
+class Message(Base):
+    __tablename__ = "messages"
+
+    id = Column(Integer, primary_key=True)
+    content = Column(Text)
+    created_at = Column(DateTime)
+
+    chat_id = Column(Integer, ForeignKey("chats.id"))
+    user_id = Column(Integer, ForeignKey("users.id"))
