@@ -7,7 +7,7 @@ from backend.schemas import ChatCreate, ChatResponse
 
 router = APIRouter(prefix="/chats", tags=["Chats"])
 
-# создать чат
+
 @router.post("/", response_model=ChatResponse)
 def create_chat(chat: ChatCreate, db: Session = Depends(get_db)):
     db_chat = Chat(name=chat.name)
