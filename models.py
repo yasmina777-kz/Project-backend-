@@ -4,21 +4,33 @@ from sqlalchemy import Column, Integer, String, ForeignKey,Table, Text, DateTime
 from backend.db import Base
 
 
+chat_members = Table(
+    "chat_members",
+    Base.metadata,
+    Column("chat_id", Integer, ForeignKey("chats.id")),
+    Column("user_id", Integer, ForeignKey("users.id")))
+
+
 class User(Base):
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     email: Mapped[str] = mapped_column(String, unique=True, index=True, nullable=False)
     hashed_password: Mapped[str] = mapped_column(String, nullable=False)
-    role: Mapped[str] = mapped_column(String,default="employee", nullable=False)
-
+    role: Mapped[str] = mapped_column(String, default="employee", nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
 
-    posts: Mapped[list['Posts']] = relationship(
+    posts: Mapped[list["Posts"]] = relationship(
         back_populates="user",
         cascade="all, delete-orphan"
     )
 
+
+    chats: Mapped[list["Chat"]] = relationship(
+        "Chat",
+        secondary=chat_members,
+        back_populates="members"
+    )
 
 class Posts(Base):
     __tablename__ = "posts"
@@ -34,9 +46,13 @@ class Posts(Base):
 
 class Chat(Base):
     __tablename__ = "chats"
-
     id = Column(Integer, primary_key=True)
     name = Column(String)
+    members: Mapped[list["User"]] = relationship(
+        "User",
+        secondary=chat_members,
+        back_populates="chats"
+    )
 
 
 class Message(Base):
