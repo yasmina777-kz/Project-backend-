@@ -1,3 +1,5 @@
+from starlette.staticfiles import StaticFiles
+
 from backend.routers import auth, users, posts
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -13,7 +15,7 @@ from  backend.db import engine
 from backend.models import Base
 from backend.routers import users,chats,messages
 from backend.websocket import (router as ws_router)
-
+from backend.routers import reactions, uploads
 
 Base.metadata.create_all(bind=engine)
 
@@ -37,5 +39,13 @@ app.include_router(chats.router)
 app.include_router(messages.router)
 
 app.include_router(ws_router)
+
+app.include_router(reactions.router)
+
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+
+app.include_router(uploads.router)
+
+
 
 pwd_context = CryptContext(schemes=["bcrypt"])

@@ -2,8 +2,9 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from backend.db import get_db
 from backend.deps import get_current_user
-from backend.models import Chat
+from backend.models import Chat, chat_members
 from backend.schemas import ChatCreate, ChatResponse
+from backend.models import User
 
 router = APIRouter(prefix="/chats", tags=["Chats"])
 
@@ -28,3 +29,15 @@ def get_chats(db: Session = Depends(get_db),current_user=Depends(get_current_use
     )
     return chats
     return db.query(Chat).all()
+
+@router.get("/{chat_id}/users")
+def get_chat_users(chat_id: int, db: Session = Depends(get_db)):
+
+    users = (
+        db.query(User)
+        .join(chat_members)
+        .filter(chat_members.c.chat_id == chat_id)
+        .all()
+    )
+
+    return users

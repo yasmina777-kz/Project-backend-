@@ -1,4 +1,5 @@
 from fastapi import APIRouter, WebSocket
+from starlette.websockets import WebSocketDisconnect
 
 router = APIRouter()
 
@@ -18,5 +19,5 @@ async def websocket_endpoint(websocket: WebSocket, chat_id: int):
             for conn in connections[chat_id]:
                 await conn.send_text(data)
 
-    except:
+    except WebSocketDisconnect:
         connections[chat_id].remove(websocket)

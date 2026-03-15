@@ -64,3 +64,16 @@ class Message(Base):
 
     chat_id = Column(Integer, ForeignKey("chats.id"))
     user_id = Column(Integer, ForeignKey("users.id"))
+
+    is_read = Column(Boolean, default=False)
+    fike_url = Column(String, nullable=True)
+
+class Reaction(Base):
+    __tablename__ = "reactions"
+
+    id = Column(Integer, primary_key=True)
+
+    message_id = Column(Integer, ForeignKey("messages.id"))
+    user_id = Column(Integer, ForeignKey("users.id"))
+
+    emoji = Column(String)
