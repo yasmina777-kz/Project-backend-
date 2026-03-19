@@ -1,10 +1,10 @@
-from fastapi import APIRouter, Depends
+﻿from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from backend.db import get_db
-from backend.deps import get_current_user
-from backend.models import Chat, chat_members
-from backend.schemas import ChatCreate, ChatResponse
-from backend.models import User
+from db import get_db
+from deps import get_current_user
+from models import Chat, chat_members
+from schemas import ChatCreate, ChatResponse
+from models import User
 
 router = APIRouter(prefix="/chats", tags=["Chats"])
 
@@ -17,7 +17,7 @@ def create_chat(chat: ChatCreate, db: Session = Depends(get_db)):
     db.refresh(db_chat)
     return db_chat
 
-# получить все чаты
+# РїРѕР»СѓС‡РёС‚СЊ РІСЃРµ С‡Р°С‚С‹
 @router.get("/", response_model=list[ChatResponse])
 def get_chats(db: Session = Depends(get_db),current_user=Depends(get_current_user)):
 
@@ -41,3 +41,4 @@ def get_chat_users(chat_id: int, db: Session = Depends(get_db)):
     )
 
     return users
+

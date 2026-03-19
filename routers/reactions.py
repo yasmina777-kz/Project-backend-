@@ -1,9 +1,9 @@
-from fastapi import APIRouter, Depends
+﻿from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from backend.db import get_db
-from backend.models import Reaction
-from backend.deps import get_current_user
+from db import get_db
+from models import Reaction
+from deps import get_current_user
 
 router = APIRouter(prefix="/reactions", tags=["Reactions"])
 

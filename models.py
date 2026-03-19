@@ -1,7 +1,7 @@
-from sqlalchemy import String, Integer, Boolean, ForeignKey
+﻿from sqlalchemy import String, Integer, Boolean, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import Column, Integer, String, ForeignKey,Table, Text, DateTime
-from backend.db import Base
+from db import Base
 
 
 chat_members = Table(

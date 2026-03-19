@@ -1,12 +1,12 @@
-from typing import List
+﻿from typing import List
 
 from fastapi import APIRouter, status, Depends
 from sqlalchemy.orm import Session
 
-from backend import schemas
-from backend.db import get_db
-from backend.crud import posts as crud_posts
-from backend.deps import get_current_user
+import schemas
+from db import get_db
+from crud import posts as crud_posts
+from deps import get_current_user
 
 router = APIRouter(prefix="/posts", tags=["posts"])
 
@@ -34,3 +34,4 @@ def get_posts_for_user(
         user_id=current_user.id
     )
     return result
+

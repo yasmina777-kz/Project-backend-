@@ -1,18 +1,16 @@
-from fastapi import APIRouter, Depends, HTTPException
+﻿from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from backend.models import User
-from backend.schemas import UserCreate, UserResponse
-from backend.deps import get_current_admin
-from backend.db import get_db
-from passlib.context import CryptContext
-from backend.crud import users as crud_users
-
-pwd_context = CryptContext(schemes=["bcrypt"])
+from models import User
+from schemas import UserCreate, UserResponse
+from deps import get_current_admin
+from db import get_db
+from crud import users as crud_users
+from security import hash_password
 
 router = APIRouter(
     prefix="/admin",
     tags=["Admin"],
-    dependencies=[Depends(get_current_admin)]  # 🔒 автоматически на всё
+    dependencies=[Depends(get_current_admin)]  # рџ”’ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё РЅР° РІСЃС‘
 )
 
 # CREATE USER
@@ -25,7 +23,7 @@ def create_user(
     if existing:
         raise HTTPException(status_code=409, detail="Email already registered")
 
-    hashed_password = pwd_context.hash(user.password)
+    hashed_password = hash_password(user.password)
 
     db_user = User(
         email=user.email,
