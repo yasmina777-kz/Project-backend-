@@ -1,11 +1,11 @@
-from fastapi import APIRouter, Depends, HTTPException
+﻿from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.functions import current_user
 
-from backend.db import get_db
-from backend.models import Message
-from backend.schemas import MessageCreate
-from backend.deps import get_current_user
+from db import get_db
+from models import Message
+from schemas import MessageCreate
+from deps import get_current_user
 from datetime import datetime
 
 
@@ -72,4 +72,5 @@ def read_message(message_id: int, db: Session = Depends(get_db)):
     db.commit()
 
     return {"status": "read"}
+
 

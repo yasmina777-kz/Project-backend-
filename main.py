@@ -1,27 +1,27 @@
-from starlette.staticfiles import StaticFiles
+﻿from starlette.staticfiles import StaticFiles
 
-from backend.routers import auth, users, posts
+from routers import auth, users, posts
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
-from backend.models import User
-from backend.schemas import UserCreate, UserResponse
-from backend.db import Base, engine
-from backend.db import SessionLocal
-from backend.routers.auth import admin_required, get_db
+from models import User
+from schemas import UserCreate, UserResponse
+from db import Base, engine
+from db import SessionLocal
+from routers.auth import admin_required, get_db
 from passlib.context import CryptContext
-from backend.crud import users as crud_users
+from crud import users as crud_users
 from fastapi.middleware.cors import CORSMiddleware
-from  backend.db import engine
-from backend.models import Base
-from backend.routers import users,chats,messages
-from backend.websocket import (router as ws_router)
-from backend.routers import reactions, uploads
+from db import engine
+from models import Base
+from routers import users,chats,messages
+from websocket import (router as ws_router)
+from routers import reactions, uploads
 
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-# CORS должен быть ПЕРВЫМ, до роутеров
+# CORS РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РџР•Р Р’Р«Рњ, РґРѕ СЂРѕСѓС‚РµСЂРѕРІ
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000"],
@@ -49,3 +49,4 @@ app.include_router(uploads.router)
 
 
 pwd_context = CryptContext(schemes=["bcrypt"])
+
