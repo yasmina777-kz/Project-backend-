@@ -31,10 +31,14 @@ class PostCreate(BaseModel):
 class PostResponse(BaseModel):
     id: int
     title: str
+    body: str          # ← добавлено
     user_id: int
 
+    model_config = ConfigDict(from_attributes=True)  # ← добавлено
+
+
 class UserAdminUpdate(BaseModel):
-    email: Optional[EmailStr]= None
+    email: Optional[EmailStr] = None
     username: Optional[str] = None
     full_name: Optional[str] = None
     is_active: Optional[bool] = None

@@ -1,0 +1,2 @@
+def assignments():
+    return None

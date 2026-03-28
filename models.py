@@ -77,3 +77,4 @@ class Reaction(Base):
     user_id = Column(Integer, ForeignKey("users.id"))
 
     emoji = Column(String)
+

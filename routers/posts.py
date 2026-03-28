@@ -1,6 +1,6 @@
 ﻿from typing import List
 
-from fastapi import APIRouter, status, Depends
+from fastapi import APIRouter, status, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 import schemas
@@ -29,9 +29,24 @@ def get_posts_for_user(
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user)
 ):
-    result = crud_posts.get_posts_for_user(
-        db=db,
-        user_id=current_user.id
-    )
-    return result
+    # Возвращаем ВСЕ посты (нужно чтобы все видели лекции и ДЗ классов)
+    return crud_posts.get_all_posts(db=db)
 
+
+# ──────────── Новый маршрут DELETE ────────────
+@router.delete("/{post_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_post(
+    post_id: int,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user)
+):
+    post = crud_posts.get_post_by_id(db=db, post_id=post_id)
+    if not post:
+        raise HTTPException(status_code=404, detail="Post not found")
+
+    # Только автор или админ может удалить
+    if post.user_id != current_user.id and current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Not authorized to delete this post")
+
+    crud_posts.delete_post(db=db, post_id=post_id)
+    return None
